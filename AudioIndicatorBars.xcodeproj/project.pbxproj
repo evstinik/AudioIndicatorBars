@@ -34,6 +34,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1A0F0FAF1EED3E2F007E7E67 /* Example.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Example.playground; sourceTree = "<group>"; };
 		985C25B71D915E980067ED6A /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		986343B71D9070C4005C49B7 /* DoubleExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DoubleExtension.swift; sourceTree = "<group>"; };
 		988772011D8C24A2007BA3D6 /* AudioIndicatorBars.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AudioIndicatorBars.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -87,6 +88,7 @@
 		988771F71D8C24A2007BA3D6 = {
 			isa = PBXGroup;
 			children = (
+				1A0F0FAF1EED3E2F007E7E67 /* Example.playground */,
 				9887720E1D8C24A2007BA3D6 /* AudioIndicatorBarsTests */,
 				9887721B1D8C24C9007BA3D6 /* Headers */,
 				988772021D8C24A2007BA3D6 /* Products */,

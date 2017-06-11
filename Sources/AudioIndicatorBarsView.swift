@@ -21,14 +21,16 @@ open class AudioIndicatorBarsView: UIView {
     fileprivate var barCornerRadius: CGFloat = 0
     @IBInspectable var corner : CGFloat = 0 {
         didSet {
-            self.barCornerRadius = corner
+            barCornerRadius = corner
+            barsSet.forEach { $0.layer.cornerRadius = corner }
         }
     }
     
     fileprivate var barsCount: Int = 4
     @IBInspectable var bars : CGFloat = 4 {
         didSet {
-            self.barsCount = Int(bars)
+            barsCount = Int(bars)
+            setupBarViews()
         }
     }
     
@@ -36,23 +38,22 @@ open class AudioIndicatorBarsView: UIView {
     fileprivate var barColor: UIColor = UIColor.black
     @IBInspectable var color : UIColor = UIColor.black {
         didSet {
-            self.barColor = color
+            barColor = color
+            barsSet.forEach { $0.backgroundColor = color }
         }
     }
     
     // MARK: - Initializers
     required public init?(coder aDecoder: NSCoder) {
-        
         super.init(coder: aDecoder)
         
+        setupBarViews()
     }
     
     public override init(frame: CGRect) {
-        
         super.init(frame: frame)
         
-        self.doDraw(frame, self.barsCount, CGFloat(self.barCornerRadius), self.color)
-        
+        setupBarViews()
     }
     
     // Custom initializers
@@ -62,65 +63,43 @@ open class AudioIndicatorBarsView: UIView {
         _ barCornerRadius: CGFloat = 0.0,
         _ color: UIColor = UIColor.black
         ) {
-        
+        self.barsCount = barsCount
+        self.barCornerRadius = barCornerRadius
+        self.barColor = color
         super.init(frame: rect)
-
-        self.doDraw(rect, barsCount, barCornerRadius, color)
         
+        setupBarViews()
     }
     
-    // MARK: - Functions
-    override open func draw(_ rect: CGRect) {
-        super.draw(rect)
+    func setupBarViews() {
+        // Remove all previous bars
+        barsSet = []
+        subviews.forEach { $0.removeFromSuperview() }
         
-        
-        self.doDraw(rect, self.barsCount, CGFloat(self.barCornerRadius), self.color)
-        
-    }
-    
-    // Do draw
-    func doDraw(
-        _ rect: CGRect,
-        _ barsCount: Int = 4,
-        _ cornerRadius: CGFloat = 0.0,
-        _ color: UIColor = UIColor.black
-        ) {
-        
-        let sectionsWidth = rect.width / CGFloat(self.barsCount)
-        
-        for i in 0 ..< self.barsCount {
+        // Add new
+        let sectionsWidth = frame.width / CGFloat(barsCount)
+        for i in 0 ..< barsCount {
             
             let x = sectionsWidth * CGFloat(i) + AudioIndicatorBarsView.barsOffset
             let width = sectionsWidth - AudioIndicatorBarsView.barsOffset * 2
-            let y: CGFloat = rect.height - width
+            let y: CGFloat = self.frame.height - width
             
             let frame: CGRect = CGRect(x: x, y: y - AudioIndicatorBarsView.barsOffset, width: width, height: width)
-            let bar: BarView = BarView(frame, cornerRadius, color, x, width, rect.height)
+            let bar: BarView = BarView(frame, barCornerRadius, barColor, x, width, self.frame.height)
             
-            self.barsSet.append(bar)
-            
-            self.addSubview(bar)
-            
+            barsSet.append(bar)
+            addSubview(bar)
         }
-        
     }
     
     // Start animations
     open func start() {
-        
-        for bar in self.barsSet { bar.start() }
-        
+        barsSet.forEach { $0.start() }
     }
     
     // Stop animations
     open func stop() {
-        
-        for bar in self.barsSet { bar.stop() }
-        
-    }
-    
-    deinit {
-        self.barsSet.removeAll()
+        barsSet.forEach { $0.stop() }
     }
     
 }
